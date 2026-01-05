@@ -1,0 +1,576 @@
+2026-01-04 17:25:24 | DEBUG    | job_extractor:is_valid_job_url:210 | URL is not from a known job site, but will attempt extraction
+2026-01-04 17:25:24 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://current.com/careers/open-positions/?id=7506171&gh_jid=7506171
+2026-01-04 17:25:25 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:25:25 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://current.com/careers/open-positions/?id=7506171&gh_jid=7506171
+2026-01-04 17:25:26 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 12839 characters
+2026-01-04 17:25:26 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:25:26 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:25:26 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:25:26 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:25:26 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:25:26 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:25:26 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 9649 characters
+2026-01-04 17:25:26 | WARNING  | job_extractor:is_meaningful_content:274 | Content may not be a job posting (only 0 job keywords found)
+2026-01-04 17:25:26 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:25:26 | WARNING  | job_extractor:extract_with_fallback:63 | Trafilatura returned empty content
+2026-01-04 17:25:26 | DEBUG    | job_extractor:extract_with_newspaper:103 | newspaper3k not available
+2026-01-04 17:33:15 | DEBUG    | job_extractor:is_valid_job_url:210 | URL is not from a known job site, but will attempt extraction
+2026-01-04 17:33:15 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: [?&]gh_jid=\d+
+2026-01-04 17:33:15 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:33:15 | INFO     | job_extractor:resolve_greenhouse_url:78 | Resolved to Greenhouse embed URL: https://boards.greenhouse.io/embed/job_app?token=7506171
+2026-01-04 17:33:15 | INFO     | job_extractor:process_job_url:216 | URL resolved: https://current.com/careers/open-positions/?id=7506171&gh_jid=7506171 → https://boards.greenhouse.io/embed/job_app?token=7506171
+2026-01-04 17:33:15 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/embed/job_app?token=7506171
+2026-01-04 17:33:16 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:33:16 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/embed/job_app?token=7506171
+2026-01-04 17:33:16 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 73833 characters
+2026-01-04 17:33:16 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:33:16 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:33:16 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:33:33 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 2016 (prompt: 1447, completion: 569)
+2026-01-04 17:33:33 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Data Analyst, Payments Platform
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://company.com/careers/data-scientist
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:11 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://company.com/careers/data-scientist
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 3653 characters
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:46:11 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:11 | DEBUG    | job_extractor:clean_html_content:115 | Removed 3 unwanted tags
+2026-01-04 17:46:11 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:11 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 1402 characters
+2026-01-04 17:46:11 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (9 job keywords found)
+2026-01-04 17:46:11 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:46:11 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 300, completion: 200)
+2026-01-04 17:46:11 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://company.com/careers/job
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:11 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://company.com/careers/job
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 3653 characters
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 1448 characters
+2026-01-04 17:46:11 | DEBUG    | job_extractor:detect_lever:120 | Lever pattern matched: jobs\.lever\.co
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:61 | Detected Lever job page
+2026-01-04 17:46:11 | DEBUG    | job_extractor:resolve_lever_url:163 | Lever URL already in canonical form
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://jobs.lever.co/startupxyz/abc123-def456
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:11 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://jobs.lever.co/startupxyz/abc123-def456
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 3845 characters
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:46:11 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:46:11 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 450 (prompt: 280, completion: 170)
+2026-01-04 17:46:11 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:46:11 | DEBUG    | job_extractor:detect_lever:120 | Lever pattern matched: jobs\.lever\.co
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:61 | Detected Lever job page
+2026-01-04 17:46:11 | INFO     | job_extractor:resolve_lever_url:160 | Cleaned Lever URL: https://jobs.lever.co/company/abc123
+2026-01-04 17:46:11 | DEBUG    | job_extractor:detect_workday:140 | Workday pattern matched: myworkdayjobs\.com
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:66 | Detected Workday job page
+2026-01-04 17:46:11 | DEBUG    | job_extractor:detect_workday:140 | Workday pattern matched: myworkdayjobs\.com
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:66 | Detected Workday job page
+2026-01-04 17:46:11 | DEBUG    | job_extractor:resolve_workday_url:182 | Workday URL - using original (no resolution needed)
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://company.com/job
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:11 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://company.com/job
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 259 characters
+2026-01-04 17:46:11 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:11 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:46:11 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:11 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 120 characters
+2026-01-04 17:46:11 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 120 chars (min: 200)
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://company.com/homepage
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:11 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://company.com/homepage
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 445 characters
+2026-01-04 17:46:11 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:11 | DEBUG    | job_extractor:clean_html_content:115 | Removed 2 unwanted tags
+2026-01-04 17:46:11 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:11 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 87 characters
+2026-01-04 17:46:11 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 87 chars (min: 200)
+2026-01-04 17:46:11 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: boards\.greenhouse\.io
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:46:11 | DEBUG    | job_extractor:resolve_greenhouse_url:61 | URL is already canonical Greenhouse format
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/techcorp/jobs/12345
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:11 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/techcorp/jobs/12345
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 4319 characters
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:46:11 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:46:11 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 300, completion: 200)
+2026-01-04 17:46:11 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:46:11 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: [?&]gh_jid=\d+
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:46:11 | INFO     | job_extractor:resolve_greenhouse_url:78 | Resolved to Greenhouse embed URL: https://boards.greenhouse.io/embed/job_app?token=12345
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/embed/job_app?token=12345
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:11 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/embed/job_app?token=12345
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 4319 characters
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:46:11 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: boards\.greenhouse\.io
+2026-01-04 17:46:11 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:46:11 | DEBUG    | job_extractor:resolve_greenhouse_url:61 | URL is already canonical Greenhouse format
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/startup/jobs/67890
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:11 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/startup/jobs/67890
+2026-01-04 17:46:11 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 850 characters
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:46:11 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:46:11 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:11 | DEBUG    | job_extractor:clean_html_content:115 | Removed 2 unwanted tags
+2026-01-04 17:46:11 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:11 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 169 characters
+2026-01-04 17:46:11 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 169 chars (min: 200)
+2026-01-04 17:46:17 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: boards\.greenhouse\.io
+2026-01-04 17:46:17 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:46:17 | DEBUG    | job_extractor:resolve_greenhouse_url:61 | URL is already canonical Greenhouse format
+2026-01-04 17:46:17 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/invalid/jobs/000
+2026-01-04 17:46:17 | ERROR    | job_extractor:fetch_url:166 | Unexpected error: Connection refused
+Traceback (most recent call last):
+  File "C:\Users\Koti Reddy\OneDrive - The University of Texas at Dallas\Documents\ExtractInfo\job_cv_extractor\extractor\fetcher.py", line 69, in fetch_url
+    response = requests.get(
+        url,
+    ...<3 lines>...
+        verify=True  # SSL verification
+    )
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\unittest\mock.py", line 1169, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\unittest\mock.py", line 1173, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\unittest\mock.py", line 1228, in _execute_mock_call
+    raise effect
+Exception: Connection refused
+2026-01-04 17:46:17 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/test/jobs/123
+2026-01-04 17:46:17 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:46:17 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/test/jobs/123
+2026-01-04 17:46:17 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 26 characters
+2026-01-04 17:46:17 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:46:17 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:17 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:46:17 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 0 characters
+2026-01-04 17:46:17 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 0 chars (min: 200)
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:17 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:46:17 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 47 characters
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:17 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:46:17 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 44 characters
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:17 | DEBUG    | job_extractor:clean_html_content:115 | Removed 3 unwanted tags
+2026-01-04 17:46:17 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 22 characters
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:17 | DEBUG    | job_extractor:clean_html_content:115 | Removed 2 unwanted tags
+2026-01-04 17:46:17 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 8 characters
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:17 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:46:17 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:17 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:46:18 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:18 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:46:18 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:18 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 24 characters
+2026-01-04 17:46:18 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:18 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:46:18 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:18 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 21 characters
+2026-01-04 17:46:18 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:18 | DEBUG    | job_extractor:clean_html_content:115 | Removed 4 unwanted tags
+2026-01-04 17:46:18 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:18 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:46:18 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:18 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 14 characters
+2026-01-04 17:46:18 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:19 | DEBUG    | job_extractor:clean_html_content:115 | Removed 4 unwanted tags
+2026-01-04 17:46:19 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:19 | DEBUG    | job_extractor:clean_html_content:115 | Removed 4 unwanted tags
+2026-01-04 17:46:20 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:20 | DEBUG    | job_extractor:clean_html_content:115 | Removed 3 unwanted tags
+2026-01-04 17:46:20 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:20 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 1402 characters
+2026-01-04 17:46:20 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (9 job keywords found)
+2026-01-04 17:46:20 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:20 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:46:20 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:20 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 120 characters
+2026-01-04 17:46:20 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 120 chars (min: 200)
+2026-01-04 17:46:20 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:46:20 | DEBUG    | job_extractor:clean_html_content:115 | Removed 2 unwanted tags
+2026-01-04 17:46:20 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:46:20 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 87 characters
+2026-01-04 17:46:20 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 87 chars (min: 200)
+2026-01-04 17:46:20 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 0 chars (min: 200)
+2026-01-04 17:46:20 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 3 chars (min: 200)
+2026-01-04 17:46:20 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 11 chars (min: 200)
+2026-01-04 17:46:20 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:20 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 1141 characters
+2026-01-04 17:46:20 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:20 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 1448 characters
+2026-01-04 17:46:20 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 94 characters
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 1141 characters
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:21 | WARNING  | job_extractor:extract_with_fallback:63 | Trafilatura returned empty content
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 8 characters
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 1141 characters
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 1077 characters
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 1448 characters
+2026-01-04 17:46:21 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:52:26 | DEBUG    | job_extractor:is_valid_job_url:210 | URL is not from a known job site, but will attempt extraction
+2026-01-04 17:52:26 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:52:26 | DEBUG    | job_extractor:process_job_url:219 | URL unchanged: https://careers.amd.com/careers-home/jobs/73386?lang=en-us
+2026-01-04 17:52:26 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://careers.amd.com/careers-home/jobs/73386?lang=en-us
+2026-01-04 17:52:27 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:52:27 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://careers.amd.com/careers-home/jobs/73386?lang=en-us
+2026-01-04 17:52:27 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 502533 characters
+2026-01-04 17:52:27 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:52:27 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:52:27 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:52:39 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 3706 (prompt: 3226, completion: 480)
+2026-01-04 17:52:39 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Finance Director, Data and AI
+2026-01-04 17:54:18 | DEBUG    | job_extractor:is_valid_job_url:210 | URL is not from a known job site, but will attempt extraction
+2026-01-04 17:54:18 | DEBUG    | job_extractor:detect_workday:140 | Workday pattern matched: myworkdayjobs\.com
+2026-01-04 17:54:18 | INFO     | job_extractor:detect_source:66 | Detected Workday job page
+2026-01-04 17:54:18 | DEBUG    | job_extractor:resolve_workday_url:182 | Workday URL - using original (no resolution needed)
+2026-01-04 17:54:18 | DEBUG    | job_extractor:process_job_url:219 | URL unchanged: https://workday.wd5.myworkdayjobs.com/en-US/Workday/details/Software-Development-Engineer--Cloud-Platforms-_JR-0101689?source=Careers_Website_eng
+2026-01-04 17:54:18 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://workday.wd5.myworkdayjobs.com/en-US/Workday/details/Software-Development-Engineer--Cloud-Platforms-_JR-0101689?source=Careers_Website_eng
+2026-01-04 17:54:19 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:54:19 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://workday.wd5.myworkdayjobs.com/en-US/Workday/details/Software-Development-Engineer--Cloud-Platforms-_JR-0101689?source=Careers_Website_eng
+2026-01-04 17:54:19 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 18460 characters
+2026-01-04 17:54:19 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:54:19 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:54:19 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:54:28 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 2032 (prompt: 1641, completion: 391)
+2026-01-04 17:54:28 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Software Development Engineer (Golang & Kubernetes)
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://careers.startupxyz.com/jobs/frontend-developer
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:55:47 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://careers.startupxyz.com/jobs/frontend-developer
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 2574 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:55:47 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:55:47 | DEBUG    | job_extractor:_find_main_content:312 | Found content using selector: {'name': 'main'}
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:47 | DEBUG    | job_extractor:clean_html_content:115 | Removed 4 unwanted tags
+2026-01-04 17:55:47 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 973 characters
+2026-01-04 17:55:47 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (5 job keywords found)
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:47 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_lever:120 | Lever pattern matched: jobs\.lever\.co
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:61 | Detected Lever job page
+2026-01-04 17:55:47 | DEBUG    | job_extractor:resolve_lever_url:163 | Lever URL already in canonical form
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://jobs.lever.co/techstart/abc123-def456
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:55:47 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://jobs.lever.co/techstart/abc123-def456
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 2916 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:47 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_workday:140 | Workday pattern matched: myworkdayjobs\.com
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:66 | Detected Workday job page
+2026-01-04 17:55:47 | DEBUG    | job_extractor:resolve_workday_url:182 | Workday URL - using original (no resolution needed)
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://enterprise.wd5.myworkdayjobs.com/en-US/Careers/job/Data-Scientist_R12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:55:47 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://enterprise.wd5.myworkdayjobs.com/en-US/Careers/job/Data-Scientist_R12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 2103 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:47 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:47 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 966 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:47 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://example.com/job
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:55:47 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://example.com/job
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 225 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:47 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:47 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 86 characters
+2026-01-04 17:55:47 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 86 chars (min: 200)
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 68 characters
+2026-01-04 17:55:47 | DEBUG    | job_extractor:extract_with_newspaper:103 | newspaper3k not available
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: boards\.greenhouse\.io
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_lever:120 | Lever pattern matched: jobs\.lever\.co
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:61 | Detected Lever job page
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_workday:140 | Workday pattern matched: myworkdayjobs\.com
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:66 | Detected Workday job page
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:69 | Using generic extraction (no specific platform detected)
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: [?&]gh_jid=\d+
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/acme/jobs/12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:55:47 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/acme/jobs/12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 3732 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:47 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: [?&]gh_jid=\d+
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:55:47 | INFO     | job_extractor:resolve_greenhouse_url:78 | Resolved to Greenhouse embed URL: https://boards.greenhouse.io/embed/job_app?token=12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/embed/job_app?token=12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:55:47 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/embed/job_app?token=12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 3732 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:47 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:47 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 923 characters
+2026-01-04 17:55:47 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (7 job keywords found)
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:47 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: boards\.greenhouse\.io
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:55:47 | DEBUG    | job_extractor:resolve_greenhouse_url:61 | URL is already canonical Greenhouse format
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/acme/jobs/12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:77 | Response status: 200
+2026-01-04 17:55:47 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/acme/jobs/12345
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:88 | Successfully fetched 3732 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:47 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:60 | Fetching URL: https://boards.greenhouse.io/acme/jobs/99999
+2026-01-04 17:55:47 | INFO     | job_extractor:fetch_url:77 | Response status: 404
+2026-01-04 17:55:47 | DEBUG    | job_extractor:fetch_url:78 | Final URL after redirects: https://boards.greenhouse.io/acme/jobs/99999
+2026-01-04 17:55:47 | WARNING  | job_extractor:fetch_url:99 | HTTP 404: Not Found
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:47 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:47 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:47 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 966 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:47 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:47 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:47 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 923 characters
+2026-01-04 17:55:47 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:47 | ERROR    | job_extractor:analyze_job_posting:135 | OpenAI API error: Rate limit
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: [?&]gh_jid=\d+
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:55:47 | INFO     | job_extractor:resolve_greenhouse_url:78 | Resolved to Greenhouse embed URL: https://boards.greenhouse.io/embed/job_app?token=12345
+2026-01-04 17:55:47 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: boards\.greenhouse\.io
+2026-01-04 17:55:47 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:55:48 | DEBUG    | job_extractor:resolve_greenhouse_url:61 | URL is already canonical Greenhouse format
+2026-01-04 17:55:48 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: [?&]gh_jid=\d+
+2026-01-04 17:55:48 | INFO     | job_extractor:detect_source:56 | Detected Greenhouse job page
+2026-01-04 17:55:48 | INFO     | job_extractor:resolve_greenhouse_url:78 | Resolved to Greenhouse embed URL: https://boards.greenhouse.io/embed/job_app?token=99999
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:48 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:48 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 47 characters
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:48 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:48 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 44 characters
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:48 | DEBUG    | job_extractor:clean_html_content:115 | Removed 3 unwanted tags
+2026-01-04 17:55:48 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 22 characters
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:48 | DEBUG    | job_extractor:clean_html_content:115 | Removed 2 unwanted tags
+2026-01-04 17:55:48 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 8 characters
+2026-01-04 17:55:48 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:48 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:52 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:52 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:52 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:52 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:52 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:52 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 24 characters
+2026-01-04 17:55:52 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:52 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:52 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:52 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 21 characters
+2026-01-04 17:55:52 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:52 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:52 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:52 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 14 characters
+2026-01-04 17:55:52 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 0 chars (min: 200)
+2026-01-04 17:55:52 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 3 chars (min: 200)
+2026-01-04 17:55:52 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 11 chars (min: 200)
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 951 characters
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 999 characters
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 68 characters
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | WARNING  | job_extractor:extract_with_fallback:63 | Trafilatura returned empty content
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 951 characters
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 951 characters
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | WARNING  | job_extractor:extract_with_fallback:63 | Trafilatura returned empty content
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | WARNING  | job_extractor:extract_with_fallback:63 | Trafilatura returned empty content
+2026-01-04 17:55:52 | DEBUG    | job_extractor:extract_with_newspaper:103 | newspaper3k not available
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 21 characters
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | ERROR    | job_extractor:extract_with_fallback:67 | Trafilatura extraction failed: Extraction failed
+2026-01-04 17:55:52 | ERROR    | job_extractor:extract_with_fallback:37 | trafilatura is not installed. Install with: pip install trafilatura
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | WARNING  | job_extractor:extract_with_fallback:63 | Trafilatura returned empty content
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:52 | WARNING  | job_extractor:extract_with_fallback:63 | Trafilatura returned empty content
+2026-01-04 17:55:52 | INFO     | job_extractor:extract_with_fallback:40 | Using trafilatura for content extraction (fallback method)
+2026-01-04 17:55:53 | INFO     | job_extractor:extract_with_fallback:60 | Trafilatura extracted 999 characters
+2026-01-04 17:55:53 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:55:53 | DEBUG    | job_extractor:_find_main_content:312 | Found content using selector: {'class_': re.compile('job[-_]?description', re.IGNORECASE)}
+2026-01-04 17:55:53 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:55:53 | DEBUG    | job_extractor:_find_main_content:312 | Found content using selector: {'name': 'main'}
+2026-01-04 17:55:53 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:55:53 | DEBUG    | job_extractor:_find_main_content:312 | Found content using selector: {'class_': re.compile('job[-_]?description', re.IGNORECASE)}
+2026-01-04 17:55:53 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:55:53 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:53 | DEBUG    | job_extractor:clean_html_content:115 | Removed 4 unwanted tags
+2026-01-04 17:55:53 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:53 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 973 characters
+2026-01-04 17:55:53 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:53 | DEBUG    | job_extractor:clean_html_content:115 | Removed 4 unwanted tags
+2026-01-04 17:55:53 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:53 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 973 characters
+2026-01-04 17:55:53 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:53 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:53 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:53 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 923 characters
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:54 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:54 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 923 characters
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:54 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:54 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 923 characters
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:54 | DEBUG    | job_extractor:clean_html_content:115 | Removed 4 unwanted tags
+2026-01-04 17:55:54 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 973 characters
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:54 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:54 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 0 characters
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:54 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:54 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 0 characters
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:54 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:54 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 1 boilerplate elements
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 26 characters
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:54 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:54 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 1 boilerplate elements
+2026-01-04 17:55:54 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 22 characters
+2026-01-04 17:55:54 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (10 job keywords found)
+2026-01-04 17:55:55 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 48 chars (min: 200)
+2026-01-04 17:55:55 | WARNING  | job_extractor:is_meaningful_content:274 | Content may not be a job posting (only 0 job keywords found)
+2026-01-04 17:55:55 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (9 job keywords found)
+2026-01-04 17:55:55 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (2 job keywords found)
+2026-01-04 17:55:55 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 40 chars (min: 1000)
+2026-01-04 17:55:55 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:55:55 | DEBUG    | job_extractor:_find_main_content:312 | Found content using selector: {'class_': re.compile('job[-_]?description', re.IGNORECASE)}
+2026-01-04 17:55:55 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:55 | DEBUG    | job_extractor:clean_html_content:115 | Removed 1 unwanted tags
+2026-01-04 17:55:55 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:55 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 923 characters
+2026-01-04 17:55:55 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (7 job keywords found)
+2026-01-04 17:55:55 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:55:55 | DEBUG    | job_extractor:_find_main_content:312 | Found content using selector: {'name': 'main'}
+2026-01-04 17:55:55 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:55 | DEBUG    | job_extractor:clean_html_content:115 | Removed 4 unwanted tags
+2026-01-04 17:55:55 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:55 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 973 characters
+2026-01-04 17:55:55 | DEBUG    | job_extractor:is_meaningful_content:277 | Content appears valid (5 job keywords found)
+2026-01-04 17:55:55 | INFO     | job_extractor:parse_html:249 | Parsing HTML content with BeautifulSoup
+2026-01-04 17:55:55 | INFO     | job_extractor:clean_html_content:104 | Cleaning HTML content
+2026-01-04 17:55:55 | DEBUG    | job_extractor:clean_html_content:115 | Removed 0 unwanted tags
+2026-01-04 17:55:55 | DEBUG    | job_extractor:_remove_boilerplate_elements:163 | Removed 0 boilerplate elements
+2026-01-04 17:55:55 | INFO     | job_extractor:clean_html_content:133 | Cleaned content: 86 characters
+2026-01-04 17:55:55 | WARNING  | job_extractor:is_meaningful_content:258 | Content too short: 86 chars (min: 200)
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:65 | Found JobPosting in @graph
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | DEBUG    | job_extractor:extract_schema_job_posting:69 | Failed to parse JSON-LD: Expecting value: line 2 column 27 (char 27)
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:55 | INFO     | job_extractor:extract_schema_job_posting:75 | No Schema.org JobPosting found
+2026-01-04 17:55:56 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:56 | INFO     | job_extractor:extract_schema_job_posting:52 | Found JobPosting in JSON-LD array
+2026-01-04 17:55:56 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:56 | INFO     | job_extractor:extract_schema_job_posting:58 | Found JobPosting in JSON-LD
+2026-01-04 17:55:56 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:56 | INFO     | job_extractor:extract_schema_job_posting:65 | Found JobPosting in @graph
+2026-01-04 17:55:56 | INFO     | job_extractor:extract_schema_job_posting:32 | Attempting to extract Schema.org JobPosting JSON-LD
+2026-01-04 17:55:56 | INFO     | job_extractor:extract_schema_job_posting:65 | Found JobPosting in @graph
+2026-01-04 17:55:56 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:56 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:56 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 100 (prompt: <MagicMock name='OpenAI().chat.completions.create().usage.prompt_tokens' id='2579313497760'>, completion: <MagicMock name='OpenAI().chat.completions.create().usage.completion_tokens' id='2579313506496'>)
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:56 | ERROR    | job_extractor:analyze_job_posting:135 | OpenAI API error: API Error
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4-turbo
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:56 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:56 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:119 | Tokens used: 500 (prompt: 400, completion: 100)
+2026-01-04 17:55:56 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:56 | INFO     | job_extractor:analyze_job_posting:95 | Analyzing job posting with gpt-4o-mini
+2026-01-04 17:55:56 | INFO     | job_extractor:_parse_llm_response:169 | Successfully parsed job analysis: Senior Software Engineer
+2026-01-04 17:55:57 | DEBUG    | job_extractor:detect_greenhouse:92 | Greenhouse pattern matched: boards\.greenhouse\.io
