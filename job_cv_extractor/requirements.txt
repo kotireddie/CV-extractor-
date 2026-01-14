@@ -17,6 +17,9 @@ trafilatura>=1.6.0
 # OpenAI SDK
 openai>=1.0.0
 
+# Environment variables
+python-dotenv>=1.0.0
+
 # Typing support (included in Python 3.10+)
 # typing-extensions>=4.0.0
 

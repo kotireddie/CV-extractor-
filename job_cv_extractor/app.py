@@ -8,6 +8,11 @@ Combines web scraping, content extraction, and LLM analysis.
 import streamlit as st
 import os
 from typing import Optional
+from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Import modules
 from extractor.fetcher import fetch_url, is_valid_job_url
@@ -19,6 +24,7 @@ from extractor.url_resolver import resolve_url
 from llm.analyzer import analyze_job_posting, JobAnalysisResult
 from utils.keyword_ranker import rank_keywords, format_keywords_for_display
 from utils.logger import logger, get_streamlit_logs, clear_streamlit_logs
+from utils.test_tracker import tracker
 
 # Page configuration
 st.set_page_config(
@@ -108,7 +114,7 @@ def main():
             "OpenAI API Key",
             type="password",
             value=os.environ.get('OPENAI_API_KEY', ''),
-            help="Your OpenAI API key. Can also be set via OPENAI_API_KEY environment variable."
+            help="Your OpenAI API key. Can be set via .env file, OPENAI_API_KEY environment variable, or entered here."
         )
         
         model = st.selectbox(
@@ -155,6 +161,13 @@ def main():
         is_valid, error_msg = is_valid_job_url(url)
         if not is_valid:
             st.error(f"Invalid URL: {error_msg}")
+            # Record failed validation
+            tracker.record_run(
+                url=url,
+                status="failure",
+                error_message=error_msg,
+                error_type="URL Validation Error"
+            )
             return
         
         # Process the URL
@@ -162,10 +175,33 @@ def main():
         
         if result and result.success:
             display_results(result, url)
+            # Record successful run
+            tracker.record_run(
+                url=url,
+                status="success",
+                platform_detected=getattr(result, '_source_platform', None),
+                extraction_method=getattr(result, '_extraction_method', None),
+                resolved_url=getattr(result, '_resolved_url', url),
+                was_resolved=getattr(result, '_was_resolved', False),
+                content_length=len(getattr(result, '_job_text', '')),
+                tokens_used=result.tokens_used,
+                model_used=result.model_used or model,
+                job_title=result.job_title,
+                company=result.company,
+                skills_extracted=len(result.hard_skills) + len(result.soft_skills) + len(result.inferred_skills),
+                responsibilities_extracted=len(result.responsibilities),
+                ats_keywords_extracted=len(result.ats_keywords)
+            )
+        elif result is None:
+            # Record failed run (extraction failed) - errors already recorded in process_job_url
+            pass
         
         # Show logs if enabled
         if show_logs:
             display_logs()
+        
+        # Show test history in sidebar
+        display_test_history()
     
     # Footer
     st.divider()
@@ -230,9 +266,20 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
                 fetch_result = fetch_url(url)
             
             if not fetch_result.success:
-                st.error(f"Failed to fetch URL: {fetch_result.error_message}")
-                logger.error(f"URL fetch failed: {fetch_result.error_message}")
+                error_msg = fetch_result.error_message
+                st.error(f"Failed to fetch URL: {error_msg}")
+                logger.error(f"URL fetch failed: {error_msg}")
                 status.update(label="Extraction failed", state="error")
+                # Record fetch failure
+                tracker.record_run(
+                    url=url,
+                    status="failure",
+                    platform_detected=source_name,
+                    resolved_url=resolved_url if was_resolved else url,
+                    was_resolved=was_resolved,
+                    error_message=error_msg,
+                    error_type="Fetch Error"
+                )
                 return None
         
         st.write(f"✅ Fetched {len(fetch_result.html):,} characters")
@@ -280,9 +327,21 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
                 if job_text:
                     st.write(f"✅ Extracted {len(job_text):,} characters via fallback")
                 else:
-                    st.error("Could not extract meaningful content from the page")
+                    error_msg = "Could not extract meaningful content from the page"
+                    st.error(error_msg)
                     logger.error(f"Content extraction failed for {resolved_url}")
                     status.update(label="Extraction failed", state="error")
+                    # Record extraction failure
+                    tracker.record_run(
+                        url=url,
+                        status="failure",
+                        platform_detected=source_name,
+                        extraction_method=f"Trafilatura fallback ({source_name})",
+                        resolved_url=resolved_url if was_resolved else url,
+                        was_resolved=was_resolved,
+                        error_message=error_msg,
+                        error_type="Content Extraction Error"
+                    )
                     return None
         
         # Step 7: LLM Analysis
@@ -290,9 +349,23 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
         result = analyze_job_posting(job_text, api_key, model)
         
         if not result.success:
-            st.error(f"LLM analysis failed: {result.error_message}")
-            logger.error(f"LLM analysis error: {result.error_message}")
+            error_msg = result.error_message or "LLM analysis failed"
+            st.error(f"LLM analysis failed: {error_msg}")
+            logger.error(f"LLM analysis error: {error_msg}")
             status.update(label="Analysis failed", state="error")
+            # Record LLM analysis failure
+            tracker.record_run(
+                url=url,
+                status="failure",
+                platform_detected=source_name,
+                extraction_method=extraction_method,
+                resolved_url=resolved_url if was_resolved else url,
+                was_resolved=was_resolved,
+                content_length=len(job_text),
+                error_message=error_msg,
+                error_type="LLM Analysis Error",
+                model_used=model
+            )
             return None
         
         st.write("✅ Analysis complete!")
@@ -461,6 +534,89 @@ def display_logs():
                 st.markdown(f'<span class="log-warning">⚠️ [{time}] {msg}</span>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<span class="log-info">ℹ️ [{time}] {msg}</span>', unsafe_allow_html=True)
+
+
+def display_test_history():
+    """Display test run history and statistics."""
+    stats = tracker.get_stats()
+    
+    if stats['total_runs'] == 0:
+        return
+    
+    with st.sidebar:
+        st.divider()
+        st.header("📊 Test History")
+        
+        # Statistics
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Total Runs", stats['total_runs'])
+            st.metric("Success Rate", f"{stats['success_rate']:.1f}%")
+        with col2:
+            st.metric("Success", stats['success'])
+            st.metric("Failures", stats['failure'])
+        
+        # Platform breakdown
+        if stats['platforms']:
+            st.subheader("Platforms Tested")
+            for platform, count in sorted(stats['platforms'].items(), key=lambda x: x[1], reverse=True):
+                st.write(f"• **{platform}**: {count}")
+        
+        # Error types
+        if stats['error_types']:
+            st.subheader("Error Types")
+            for error_type, count in sorted(stats['error_types'].items(), key=lambda x: x[1], reverse=True):
+                st.write(f"• **{error_type}**: {count}")
+        
+        # Recent runs
+        with st.expander("📝 Recent Test Runs", expanded=False):
+            recent_runs = tracker.get_runs(limit=10)
+            if recent_runs:
+                for run in reversed(recent_runs[-10:]):
+                    status_icon = "✅" if run.status == "success" else "❌" if run.status == "failure" else "⚠️"
+                    status_color = "green" if run.status == "success" else "red" if run.status == "failure" else "orange"
+                    
+                    # Format timestamp
+                    try:
+                        dt = datetime.fromisoformat(run.timestamp)
+                        time_str = dt.strftime("%m/%d %H:%M")
+                    except:
+                        time_str = run.timestamp[:16]
+                    
+                    st.markdown(f"{status_icon} **{time_str}**")
+                    st.caption(f"[{run.url[:50]}...]({run.url})" if len(run.url) > 50 else f"[{run.url}]({run.url})")
+                    
+                    if run.job_title:
+                        st.write(f"  • {run.job_title}")
+                    if run.error_message:
+                        st.error(f"  Error: {run.error_message[:100]}")
+                    st.write("---")
+            else:
+                st.write("No test runs yet")
+        
+        # Export button
+        if st.button("📥 Export Test Data", use_container_width=True):
+            runs = tracker.get_runs()
+            import json
+            export_data = {
+                'exported_at': datetime.now().isoformat(),
+                'total_runs': len(runs),
+                'statistics': stats,
+                'runs': [run.to_dict() for run in runs]
+            }
+            st.download_button(
+                label="Download JSON",
+                data=json.dumps(export_data, indent=2, ensure_ascii=False),
+                file_name=f"test_runs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                mime="application/json",
+                use_container_width=True
+            )
+        
+        # Clear history button
+        if st.button("🗑️ Clear History", use_container_width=True):
+            tracker.clear_runs()
+            st.success("Test history cleared!")
+            st.rerun()
 
 
 if __name__ == "__main__":
