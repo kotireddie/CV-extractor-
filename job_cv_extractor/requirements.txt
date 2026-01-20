@@ -20,6 +20,14 @@ openai>=1.0.0
 # Environment variables
 python-dotenv>=1.0.0
 
+# Headless Browser for JavaScript-rendered pages
+# Install browser with: playwright install chromium
+playwright>=1.40.0
+
+# LLMOps - Observability, Prompt Management, Cost Tracking
+# Sign up at https://langfuse.com or self-host
+langfuse>=2.0.0
+
 # Typing support (included in Python 3.10+)
 # typing-extensions>=4.0.0
 

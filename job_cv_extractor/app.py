@@ -15,13 +15,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import modules
-from extractor.fetcher import fetch_url, is_valid_job_url
+from extractor.fetcher import fetch_url, is_valid_job_url, smart_fetch, detect_js_required
 from extractor.html_parser import parse_html, extract_schema_job_posting
 from extractor.content_cleaner import clean_html_content, is_meaningful_content
 from extractor.fallback_extractor import get_best_extraction
-from extractor.source_detector import detect_source, get_source_display_name
+from extractor.source_detector import detect_source, get_source_display_name, requires_javascript, has_schema_org
 from extractor.url_resolver import resolve_url
-from llm.analyzer import analyze_job_posting, JobAnalysisResult
+from llm.analyzer import analyze_job_posting, JobAnalysisResult, get_langfuse_status
 from utils.keyword_ranker import rank_keywords, format_keywords_for_display
 from utils.logger import logger, get_streamlit_logs, clear_streamlit_logs
 from utils.test_tracker import tracker
@@ -128,6 +128,37 @@ def main():
         
         # Show logs toggle
         show_logs = st.checkbox("Show processing logs", value=False)
+        
+        # Langfuse Status
+        st.divider()
+        st.subheader("📊 LLMOps (Langfuse)")
+        langfuse_status = get_langfuse_status()
+        
+        if langfuse_status["configured"]:
+            st.success("✅ Langfuse Connected")
+            st.caption(f"Host: {langfuse_status['host']}")
+            st.caption("Tracing, cost tracking, and evaluations enabled")
+        else:
+            st.info("ℹ️ Langfuse Not Configured")
+            with st.expander("Setup Instructions"):
+                st.markdown("""
+                **To enable LLM observability:**
+                
+                1. Sign up at [langfuse.com](https://langfuse.com) (free tier)
+                2. Create a project and get API keys
+                3. Add to your `.env` file:
+                ```
+                LANGFUSE_PUBLIC_KEY=pk-...
+                LANGFUSE_SECRET_KEY=sk-...
+                ```
+                4. Restart the application
+                
+                **Benefits:**
+                - 📊 Track all LLM calls
+                - 💰 Monitor costs
+                - 📈 Evaluate extraction quality
+                - 🔄 Version prompts
+                """)
     
     # Main input
     col1, col2 = st.columns([4, 1])
@@ -213,13 +244,14 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
     Process a job posting URL through the platform-aware extraction pipeline.
     
     Steps:
-    1. Detect job source platform (Greenhouse, Lever, Workday, etc.)
+    1. Detect job source platform (Greenhouse, Lever, Workday, Apple, iCIMS, AshbyHQ, etc.)
     2. Resolve to canonical URL if needed
-    3. Fetch HTML from resolved URL
-    4. Try Schema.org extraction
+    3. Smart fetch - uses browser for JavaScript-dependent platforms
+    4. Try Schema.org extraction (works even for some JS pages like AshbyHQ)
     5. Parse and clean HTML
     6. Fallback to trafilatura if needed
-    7. Analyze with LLM
+    7. If still no content and platform requires JS, try browser fetch
+    8. Analyze with LLM
     
     Args:
         url: Job posting URL
@@ -237,9 +269,13 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
         st.write("🔎 Detecting job platform...")
         source = detect_source(url)
         source_name = get_source_display_name(source)
+        needs_js = requires_javascript(source)
+        expects_schema = has_schema_org(source)
         
         if source != "generic":
             st.write(f"✅ Detected **{source_name}** job page")
+            if needs_js:
+                st.write("ℹ️ This platform may require JavaScript rendering")
         else:
             st.write("ℹ️ Using generic extraction strategy")
         
@@ -254,9 +290,12 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
             st.write("ℹ️ Using original URL")
             logger.debug(f"URL unchanged: {url}")
         
-        # Step 3: Fetch HTML from resolved URL
+        # Step 3: Initial fetch - start with standard HTTP
+        # Even for JS-dependent sites, we try HTTP first because
+        # some (like AshbyHQ) include Schema.org data in static HTML
         st.write("📡 Fetching job posting...")
         fetch_result = fetch_url(resolved_url)
+        fetch_method = "HTTP"
         
         if not fetch_result.success:
             # If resolved URL failed, try original URL as fallback
@@ -282,9 +321,9 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
                 )
                 return None
         
-        st.write(f"✅ Fetched {len(fetch_result.html):,} characters")
+        st.write(f"✅ Fetched {len(fetch_result.html):,} characters via {fetch_method}")
         
-        # Step 4: Try Schema.org extraction
+        # Step 4: Try Schema.org extraction first (works even for some JS pages)
         st.write("🔍 Looking for structured job data...")
         schema_data = extract_schema_job_posting(fetch_result.html)
         
@@ -301,6 +340,12 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
                 parts.append(f"Job Title: {schema_data['title']}")
             if schema_data.get('company'):
                 parts.append(f"Company: {schema_data['company']}")
+            if schema_data.get('location'):
+                parts.append(f"Location: {schema_data['location']}")
+            if schema_data.get('salary'):
+                parts.append(f"Salary: {schema_data['salary']}")
+            if schema_data.get('employment_type'):
+                parts.append(f"Employment Type: {schema_data['employment_type']}")
             if schema_data.get('description'):
                 parts.append(f"\nDescription:\n{schema_data['description']}")
             if schema_data.get('skills'):
@@ -324,29 +369,96 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
                 job_text = get_best_extraction(fetch_result.html, resolved_url)
                 extraction_method = f"Trafilatura fallback ({source_name})"
                 
-                if job_text:
+                if job_text and len(job_text) >= 200:
                     st.write(f"✅ Extracted {len(job_text):,} characters via fallback")
-                else:
-                    error_msg = "Could not extract meaningful content from the page"
-                    st.error(error_msg)
-                    logger.error(f"Content extraction failed for {resolved_url}")
-                    status.update(label="Extraction failed", state="error")
-                    # Record extraction failure
-                    tracker.record_run(
-                        url=url,
-                        status="failure",
-                        platform_detected=source_name,
-                        extraction_method=f"Trafilatura fallback ({source_name})",
-                        resolved_url=resolved_url if was_resolved else url,
-                        was_resolved=was_resolved,
-                        error_message=error_msg,
-                        error_type="Content Extraction Error"
-                    )
-                    return None
         
-        # Step 7: LLM Analysis
+        # Step 7: If still no content and page needs JavaScript, try browser fetch
+        if len(job_text) < 200:
+            # Check if JavaScript appears to be required
+            js_detected = detect_js_required(fetch_result.html)
+            
+            if needs_js or js_detected:
+                st.write("🌐 Page requires JavaScript - attempting browser rendering...")
+                logger.info(f"Attempting browser fetch for {source_name}")
+                
+                try:
+                    from extractor.browser_fetcher import is_browser_available, get_platform_fetcher
+                    
+                    if is_browser_available():
+                        fetcher = get_platform_fetcher(source)
+                        browser_result = fetcher(resolved_url)
+                        
+                        if browser_result.success and browser_result.html:
+                            st.write(f"✅ Browser fetched {len(browser_result.html):,} characters")
+                            fetch_method = "Browser"
+                            
+                            # Try extraction methods on browser-rendered content
+                            # First try Schema.org (in case it wasn't in static HTML)
+                            browser_schema = extract_schema_job_posting(browser_result.html)
+                            if browser_schema and browser_schema.get('description'):
+                                parts = []
+                                if browser_schema.get('title'):
+                                    parts.append(f"Job Title: {browser_schema['title']}")
+                                if browser_schema.get('company'):
+                                    parts.append(f"Company: {browser_schema['company']}")
+                                if browser_schema.get('description'):
+                                    parts.append(f"\nDescription:\n{browser_schema['description']}")
+                                job_text = '\n'.join(parts)
+                                extraction_method = f"Schema.org via Browser ({source_name})"
+                                st.write("✅ Found Schema.org data in browser-rendered content")
+                            else:
+                                # Try HTML cleaning on browser content
+                                browser_cleaned = clean_html_content(browser_result.html)
+                                if is_meaningful_content(browser_cleaned):
+                                    job_text = browser_cleaned
+                                    extraction_method = f"Browser + HTML parsing ({source_name})"
+                                    st.write(f"✅ Extracted {len(job_text):,} characters from browser content")
+                                else:
+                                    # Try trafilatura on browser content
+                                    browser_fallback = get_best_extraction(browser_result.html, resolved_url)
+                                    if browser_fallback and len(browser_fallback) >= 200:
+                                        job_text = browser_fallback
+                                        extraction_method = f"Browser + Trafilatura ({source_name})"
+                                        st.write(f"✅ Extracted {len(job_text):,} characters via browser fallback")
+                        else:
+                            st.write(f"⚠️ Browser fetch failed: {browser_result.error_message}")
+                    else:
+                        st.write("⚠️ Browser not available - install Playwright for JavaScript support")
+                        st.caption("Run: `pip install playwright && playwright install chromium`")
+                except Exception as e:
+                    st.write(f"⚠️ Browser fetch error: {str(e)}")
+                    logger.error(f"Browser fetch exception: {str(e)}")
+        
+        # Final check - do we have content?
+        if len(job_text) < 200:
+            error_msg = "Could not extract meaningful content from the page"
+            if needs_js:
+                error_msg += ". This platform requires JavaScript rendering - ensure Playwright is installed."
+            st.error(error_msg)
+            logger.error(f"Content extraction failed for {resolved_url}")
+            status.update(label="Extraction failed", state="error")
+            # Record extraction failure
+            tracker.record_run(
+                url=url,
+                status="failure",
+                platform_detected=source_name,
+                extraction_method=extraction_method or f"All methods failed ({source_name})",
+                resolved_url=resolved_url if was_resolved else url,
+                was_resolved=was_resolved,
+                error_message=error_msg,
+                error_type="Content Extraction Error"
+            )
+            return None
+        
+        # Step 8: LLM Analysis
         st.write(f"🤖 Analyzing with {model}...")
-        result = analyze_job_posting(job_text, api_key, model)
+        result = analyze_job_posting(
+            job_text, 
+            api_key, 
+            model,
+            platform=source_name,  # For Langfuse tracing
+            url=resolved_url       # For Langfuse tracing
+        )
         
         if not result.success:
             error_msg = result.error_message or "LLM analysis failed"
@@ -379,6 +491,7 @@ def process_job_url(url: str, api_key: str, model: str) -> Optional[JobAnalysisR
         result._source_platform = source_name
         result._resolved_url = resolved_url
         result._was_resolved = was_resolved
+        result._fetch_method = fetch_method
         
         status.update(label="Extraction complete!", state="complete")
     
@@ -499,11 +612,28 @@ def display_results(result: JobAnalysisResult, url: str):
         extraction_method = getattr(result, '_extraction_method', 'Unknown')
         resolved_url = getattr(result, '_resolved_url', url)
         was_resolved = getattr(result, '_was_resolved', False)
+        fetch_method = getattr(result, '_fetch_method', 'HTTP')
         
-        st.markdown(f"**Platform Detected:** {source_platform}")
-        st.markdown(f"**Extraction Method:** {extraction_method}")
-        st.markdown(f"**Model Used:** {result.model_used or 'Unknown'}")
-        st.markdown(f"**Tokens Used:** {result.tokens_used or 'Unknown'}")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown(f"**Platform Detected:** {source_platform}")
+            st.markdown(f"**Extraction Method:** {extraction_method}")
+            st.markdown(f"**Fetch Method:** {fetch_method}")
+            st.markdown(f"**Model Used:** {result.model_used or 'Unknown'}")
+        
+        with col2:
+            st.markdown(f"**Tokens Used:** {result.tokens_used or 'Unknown'}")
+            if result.cost_usd:
+                st.markdown(f"**Estimated Cost:** ${result.cost_usd:.6f}")
+            if result.latency_ms:
+                st.markdown(f"**Latency:** {result.latency_ms}ms")
+            if result.trace_url:
+                st.markdown(f"**Langfuse Trace:** [View in Dashboard]({result.trace_url})")
+            elif result.trace_id:
+                st.markdown(f"**Trace ID:** `{result.trace_id[:16]}...`")
+        
+        st.divider()
         
         if was_resolved and resolved_url != url:
             st.markdown(f"**Original URL:** [{url}]({url})")
