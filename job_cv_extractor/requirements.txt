@@ -1,38 +1,50 @@
 # Job CV Extractor - Dependencies
 # Python 3.10+ required
 
+# ============================================
 # Web Framework
+# ============================================
 streamlit>=1.28.0
 
-# HTTP Requests
+# ============================================
+# HTTP & Web Requests
+# ============================================
 requests>=2.31.0
+httpx>=0.25.0  # Used by langfuse, async HTTP client
 
-# HTML Parsing
+# ============================================
+# HTML Parsing & Content Extraction
+# ============================================
 beautifulsoup4>=4.12.0
 lxml>=4.9.0
+lxml_html_clean  # Required for trafilatura HTML cleaning
 
-# Content Extraction (fallback)
+# Content Extraction (fallback method)
 trafilatura>=1.6.0
 
-# OpenAI SDK
+# ============================================
+# AI/LLM Integration
+# ============================================
+# OpenAI SDK for job analysis
 openai>=1.0.0
-
-# Environment variables
-python-dotenv>=1.0.0
-
-# Headless Browser for JavaScript-rendered pages
-# Install browser with: playwright install chromium
-playwright>=1.40.0
 
 # LLMOps - Observability, Prompt Management, Cost Tracking
 # Sign up at https://langfuse.com or self-host
 langfuse>=2.0.0
 
-# Typing support (included in Python 3.10+)
-# typing-extensions>=4.0.0
+# ============================================
+# Headless Browser (JavaScript-rendered pages)
+# ============================================
+# After install, run: playwright install chromium
+playwright>=1.40.0
 
 # ============================================
-# Testing Dependencies (install with: pip install -r requirements.txt)
+# Configuration
+# ============================================
+python-dotenv>=1.0.0
+
+# ============================================
+# Testing Dependencies
 # ============================================
 pytest>=7.4.0
 pytest-cov>=4.1.0
