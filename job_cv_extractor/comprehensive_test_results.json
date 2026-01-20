@@ -1,0 +1,168 @@
+[
+  {
+    "name": "Apple Careers",
+    "url": "https://jobs.apple.com/en-us/details/200630587-3956/data-analyst-strategic-data-solutions?team=OPMFG",
+    "timestamp": "2026-01-19T16:51:49.028375",
+    "source_detection": {
+      "source": "apple",
+      "display_name": "Apple Careers",
+      "requires_js": true,
+      "has_schema_org": false
+    },
+    "url_resolution": {
+      "was_resolved": false
+    },
+    "http_fetch": {
+      "success": true,
+      "html_length": 191116
+    },
+    "schema_extraction": {
+      "found": false,
+      "content_length": 0
+    },
+    "html_cleaning": {
+      "cleaned_length": 65,
+      "is_meaningful": false
+    },
+    "fallback_extraction": {
+      "content_length": 0
+    },
+    "browser_fetch": {
+      "success": true,
+      "html_length": 295434
+    },
+    "final": {
+      "content_length": 362,
+      "extraction_method": "Browser + Trafilatura (Apple Careers)",
+      "fetch_method": "Browser"
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "name": "iCIMS (AttainFinance)",
+    "url": "https://careers-attainfinance.icims.com/jobs/9403/database-engineer/job?mobile=false&width=1290&height=500&bga=true&needsRedirect=false&jan1offset=-360&jun1offset=-300",
+    "timestamp": "2026-01-19T16:53:26.259311",
+    "source_detection": {
+      "source": "icims",
+      "display_name": "iCIMS",
+      "requires_js": true,
+      "has_schema_org": false
+    },
+    "url_resolution": {
+      "was_resolved": false
+    },
+    "http_fetch": {
+      "success": true,
+      "html_length": 45903
+    },
+    "schema_extraction": {
+      "found": false,
+      "content_length": 0
+    },
+    "html_cleaning": {
+      "cleaned_length": 0,
+      "is_meaningful": false
+    },
+    "fallback_extraction": {
+      "content_length": 0
+    },
+    "browser_fetch": {
+      "success": true,
+      "html_length": 147969
+    },
+    "final": {
+      "content_length": 8561,
+      "extraction_method": "Browser + Schema.org (iCIMS)",
+      "fetch_method": "Browser"
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "name": "AshbyHQ (First Resonance)",
+    "url": "https://jobs.ashbyhq.com/first-resonance/0492a694-d7f2-47a7-940c-9a8a2f8c7bf0",
+    "timestamp": "2026-01-19T16:54:02.298104",
+    "source_detection": {
+      "source": "ashby",
+      "display_name": "AshbyHQ",
+      "requires_js": true,
+      "has_schema_org": true
+    },
+    "url_resolution": {
+      "was_resolved": false
+    },
+    "http_fetch": {
+      "success": true,
+      "html_length": 67599
+    },
+    "schema_extraction": {
+      "found": true,
+      "content_length": 6052
+    },
+    "final": {
+      "content_length": 6052,
+      "extraction_method": "Schema.org (AshbyHQ)",
+      "fetch_method": "HTTP"
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "name": "Tractor Supply (SAP SuccessFactors)",
+    "url": "https://www.tractorsupply.careers/job/Brentwood-Data-Scientist%2C-Merchandising-Analytics-TN-37027/1338676300/",
+    "timestamp": "2026-01-19T16:54:02.701108",
+    "source_detection": {
+      "source": "successfactors",
+      "display_name": "SAP SuccessFactors",
+      "requires_js": false,
+      "has_schema_org": false
+    },
+    "url_resolution": {
+      "was_resolved": false
+    },
+    "http_fetch": {
+      "success": true,
+      "html_length": 94804
+    },
+    "schema_extraction": {
+      "found": false,
+      "content_length": 0
+    },
+    "html_cleaning": {
+      "cleaned_length": 6891,
+      "is_meaningful": true
+    },
+    "final": {
+      "content_length": 6891,
+      "extraction_method": "HTML Cleaning (SAP SuccessFactors)",
+      "fetch_method": "HTTP"
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "name": "AshbyHQ (Braintrust)",
+    "url": "https://jobs.ashbyhq.com/Braintrust/f6b07ffd-a793-49df-8815-6230735f482a?utm_source=portfoliojobs.a16z.com",
+    "timestamp": "2026-01-19T16:54:03.239076",
+    "source_detection": {
+      "source": "ashby",
+      "display_name": "AshbyHQ",
+      "requires_js": true,
+      "has_schema_org": true
+    },
+    "url_resolution": {
+      "was_resolved": false
+    },
+    "http_fetch": {
+      "success": true,
+      "html_length": 68068
+    },
+    "schema_extraction": {
+      "found": true,
+      "content_length": 4686
+    },
+    "final": {
+      "content_length": 4686,
+      "extraction_method": "Schema.org (AshbyHQ)",
+      "fetch_method": "HTTP"
+    },
+    "status": "SUCCESS"
+  }
+]
