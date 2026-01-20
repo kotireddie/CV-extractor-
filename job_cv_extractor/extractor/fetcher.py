@@ -3,6 +3,7 @@ URL Fetching Module
 
 Handles HTTP requests with browser-like headers and proper error handling.
 Designed to work with various job posting sites.
+Includes smart fetching that uses headless browser for JavaScript-dependent pages.
 """
 
 import requests
@@ -44,6 +45,7 @@ class FetchResult:
     status_code: Optional[int]
     error_message: Optional[str]
     final_url: str  # After redirects
+    method: str = "http"  # 'http' or 'browser'
 
 
 def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
@@ -92,7 +94,8 @@ def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
                 html=html_content,
                 status_code=response.status_code,
                 error_message=None,
-                final_url=response.url
+                final_url=response.url,
+                method="http"
             )
         else:
             error_msg = f"HTTP {response.status_code}: {response.reason}"
@@ -103,7 +106,8 @@ def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
                 html=None,
                 status_code=response.status_code,
                 error_message=error_msg,
-                final_url=response.url
+                final_url=response.url,
+                method="http"
             )
     
     except requests.exceptions.Timeout:
@@ -114,7 +118,8 @@ def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
             html=None,
             status_code=None,
             error_message=error_msg,
-            final_url=url
+            final_url=url,
+            method="http"
         )
     
     except requests.exceptions.SSLError as e:
@@ -125,7 +130,8 @@ def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
             html=None,
             status_code=None,
             error_message=error_msg,
-            final_url=url
+            final_url=url,
+            method="http"
         )
     
     except requests.exceptions.ConnectionError as e:
@@ -136,7 +142,8 @@ def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
             html=None,
             status_code=None,
             error_message=error_msg,
-            final_url=url
+            final_url=url,
+            method="http"
         )
     
     except requests.exceptions.TooManyRedirects:
@@ -147,7 +154,8 @@ def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
             html=None,
             status_code=None,
             error_message=error_msg,
-            final_url=url
+            final_url=url,
+            method="http"
         )
     
     except requests.exceptions.RequestException as e:
@@ -158,7 +166,8 @@ def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
             html=None,
             status_code=None,
             error_message=error_msg,
-            final_url=url
+            final_url=url,
+            method="http"
         )
     
     except Exception as e:
@@ -169,8 +178,95 @@ def fetch_url(url: str, timeout: int = REQUEST_TIMEOUT) -> FetchResult:
             html=None,
             status_code=None,
             error_message=error_msg,
-            final_url=url
+            final_url=url,
+            method="http"
         )
+
+
+def fetch_with_browser(url: str, source: str = "generic") -> FetchResult:
+    """
+    Fetch HTML content using a headless browser for JavaScript-rendered pages.
+    
+    Args:
+        url: The URL to fetch
+        source: The detected source platform
+    
+    Returns:
+        FetchResult containing the rendered HTML or error information
+    """
+    # Import browser fetcher (lazy import to avoid dependency if not needed)
+    try:
+        from extractor.browser_fetcher import (
+            is_browser_available,
+            get_platform_fetcher
+        )
+    except ImportError:
+        return FetchResult(
+            success=False,
+            html=None,
+            status_code=None,
+            error_message="Browser fetcher module not available",
+            final_url=url,
+            method="browser"
+        )
+    
+    if not is_browser_available():
+        return FetchResult(
+            success=False,
+            html=None,
+            status_code=None,
+            error_message="Playwright not installed. Install with: pip install playwright && playwright install chromium",
+            final_url=url,
+            method="browser"
+        )
+    
+    # Get platform-specific fetcher
+    fetcher = get_platform_fetcher(source)
+    browser_result = fetcher(url)
+    
+    return FetchResult(
+        success=browser_result.success,
+        html=browser_result.html,
+        status_code=200 if browser_result.success else None,
+        error_message=browser_result.error_message,
+        final_url=browser_result.final_url,
+        method="browser"
+    )
+
+
+def smart_fetch(url: str, source: str, use_browser: bool = False) -> FetchResult:
+    """
+    Smart fetch that chooses the appropriate method based on platform.
+    
+    For platforms that require JavaScript (Apple, iCIMS, Workday), 
+    this will use the browser if available.
+    
+    Args:
+        url: The URL to fetch
+        source: The detected source platform
+        use_browser: Force browser fetch even for non-JS platforms
+    
+    Returns:
+        FetchResult containing the HTML or error information
+    """
+    from extractor.source_detector import requires_javascript
+    
+    # Determine if we need browser-based fetching
+    needs_browser = use_browser or requires_javascript(source)
+    
+    if needs_browser:
+        logger.info(f"Platform '{source}' requires JavaScript - attempting browser fetch")
+        browser_result = fetch_with_browser(url, source)
+        
+        if browser_result.success:
+            return browser_result
+        
+        # If browser fetch failed, try standard HTTP as fallback
+        logger.warning(f"Browser fetch failed: {browser_result.error_message}")
+        logger.info("Falling back to standard HTTP fetch")
+    
+    # Use standard HTTP fetch
+    return fetch_url(url)
 
 
 def is_valid_job_url(url: str) -> Tuple[bool, str]:
@@ -198,7 +294,10 @@ def is_valid_job_url(url: str) -> Tuple[bool, str]:
         'ziprecruiter.com', 'dice.com', 'careerbuilder.com', 'lever.co',
         'greenhouse.io', 'workday.com', 'smartrecruiters.com', 'jobs.lever.co',
         'boards.greenhouse.io', 'angel.co', 'wellfound.com', 'simplyhired.com',
-        'hired.com', 'builtin.com', 'theladders.com', 'flexjobs.com'
+        'hired.com', 'builtin.com', 'theladders.com', 'flexjobs.com',
+        # New platforms
+        'jobs.apple.com', 'icims.com', 'ashbyhq.com', 'successfactors.com',
+        '.careers'
     ]
     
     url_lower = url.lower()
@@ -211,3 +310,50 @@ def is_valid_job_url(url: str) -> Tuple[bool, str]:
     
     return True, ""
 
+
+def detect_js_required(html: str) -> bool:
+    """
+    Detect if a page requires JavaScript to render content.
+    
+    Args:
+        html: The fetched HTML content
+    
+    Returns:
+        True if JavaScript appears to be required
+    """
+    if not html:
+        return True
+    
+    html_lower = html.lower()
+    
+    # Common indicators that JavaScript is required
+    js_indicators = [
+        'please enable javascript',
+        'javascript is required',
+        'javascript must be enabled',
+        'you need to enable javascript',
+        'this site requires javascript',
+        'enable javascript to view',
+        'javascript is disabled',
+    ]
+    
+    for indicator in js_indicators:
+        if indicator in html_lower:
+            logger.debug(f"JavaScript required indicator found: {indicator}")
+            return True
+    
+    # Check for empty body or very short content
+    # SPA shells typically have minimal content
+    from bs4 import BeautifulSoup
+    try:
+        soup = BeautifulSoup(html, 'html.parser')
+        body = soup.find('body')
+        if body:
+            body_text = body.get_text(strip=True)
+            if len(body_text) < 100:
+                logger.debug(f"Body text very short ({len(body_text)} chars), likely needs JS")
+                return True
+    except Exception:
+        pass
+    
+    return False
